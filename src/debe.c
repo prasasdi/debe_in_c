@@ -95,7 +95,7 @@ typedef struct {
 } InputBuffer;
 
 int new_input_buffer(InputBuffer* input_buffer) {
-  input_buffer = (InputBuffer*)malloc(sizeof(InputBuffer));
+  //input_buffer = (InputBuffer*)malloc(sizeof(InputBuffer));
   if (input_buffer==NULL) {
     perror("new_input_buffer malloc()");
     return -1;
@@ -193,8 +193,7 @@ ExecuteResult execute_statement(Statement* statement, Table* table) {
 }
 
 int main(void) {
-  //InputBuffer* input_buffer = (InputBuffer*)malloc(sizeof(InputBuffer));
-  InputBuffer* input_buffer;
+  InputBuffer* input_buffer = (InputBuffer*)malloc(sizeof(InputBuffer));
   Table* table = (Table*)malloc(sizeof(Table));
   new_input_buffer(input_buffer);
   new_table(table);
