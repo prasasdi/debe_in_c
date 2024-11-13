@@ -8,7 +8,8 @@ typedef enum {
 
 typedef enum {
   PREPARE_SUCCESS,
-  PREPARE_UNRECOGNIZED_STATEMENT
+  PREPARE_UNRECOGNIZED_STATEMENT,
+  PREPARE_SYNTAX_ERROR
 } PrepareResult;
 
 typedef enum {
@@ -16,8 +17,9 @@ typedef enum {
   STATEMENT_SELECT
 } StatementType;
 
-typedef struct {
-  StatementType type;
-} Statement;
+typedef enum {
+  EXECUTE_SUCCESS,
+  EXECUTE_TABLE_FULL
+} ExecuteResult;
 
 #endif
