@@ -191,12 +191,14 @@ void leaf_node_find(Cursor* cursor, Table* table, uint32_t page_num, uint32_t ke
 
     if (key == key_at_index) {
       cursor->cell_num = index;
+      return;
     } else {
       min_index = index + 1;
     }
   }
 
   cursor->cell_num = min_index;
+  return;
 }
 
 
@@ -209,7 +211,6 @@ void leaf_node_find(Cursor* cursor, Table* table, uint32_t page_num, uint32_t ke
 void table_find(Cursor* cursor, Table* table, uint32_t key) {
   uint32_t root_page_num = table->root_page_num;
   void* root_node = get_page(table->pager, root_page_num);
-  printf("%d > %d : %d\n", root_page_num, get_node_type(root_node), NODE_LEAF);
   if (get_node_type(root_node) == NODE_LEAF) {
     leaf_node_find(cursor, table, root_page_num, key);
   } else {
@@ -483,6 +484,8 @@ ExecuteResult execute_insert(Statement* statement, Table* table) {
   if (cursor->cell_num < num_cells) {
     uint32_t key_at_index = *leaf_node_key(node, cursor->cell_num);
     if (key_at_index == key_to_insert) {
+      free(cursor);
+      printf("duplikat\n");
       return EXECUTE_DUPLICATE_KEY;
     }
   }
@@ -569,7 +572,7 @@ int main(int argc, char* argv[]) {
     switch (execute_statement(&statement, table)) {
       case (EXECUTE_DUPLICATE_KEY):
         printf("Error: duplicate key.\n");
-        break;;
+        break;
       case (EXECUTE_SUCCESS):
         printf("Executed\n");
         break;
